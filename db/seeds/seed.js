@@ -30,8 +30,6 @@ exports.seed = function(knex) {
         .insert(upDatedComments)
         .returning("*");
     })
-    .then(comments => {
-      console.log(comments);
-    })
+    .then(comments => {})
     .catch(err => console.log(err));
 };
