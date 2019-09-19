@@ -21,4 +21,15 @@ describe("/api", () => {
         });
     });
   });
+  describe("/users/:username", () => {
+    it("GET: 200, responds with user object when given a valid username", () => {
+      return request(app)
+        .get("/api/users/butter_bridge")
+        .expect(200)
+        .then(({ body: { user } }) => {
+          expect(user).to.be.an("array");
+          expect(user[0]).to.contain.keys(["username", "avatar_url", "name"]);
+        });
+    });
+  });
 });
