@@ -295,7 +295,7 @@ describe("/api", () => {
           expect(comment.votes).to.equal(26);
         });
     });
-    it("status:200 should update a comment's votes given the ID and respond with the updated comment (decreasing votes)", () => {
+    it("PATCH:200 should update a comment's votes given the ID and respond with the updated comment (decreasing votes)", () => {
       return request(app)
         .patch("/api/comments/1")
         .send({
@@ -307,7 +307,7 @@ describe("/api", () => {
           expect(comment.votes).to.equal(15);
         });
     });
-    it("status:404 responds with an error message when trying to update with an ID that does not exist", () => {
+    it("404: responds with an error message when trying to update with an ID that does not exist", () => {
       return request(app)
         .patch("/api/comments/9999")
         .send({
@@ -318,7 +318,7 @@ describe("/api", () => {
           expect(body.msg).to.equal("Comment not found");
         });
     });
-    it("status:400 responds with an error message when trying to update with an ID that is not of the correct datatype", () => {
+    it("400: responds with an error message when trying to update with an ID that is not of the correct datatype", () => {
       return request(app)
         .patch("/api/comments/not-a-number")
         .send({
