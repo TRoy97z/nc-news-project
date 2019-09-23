@@ -29,7 +29,7 @@ describe("/api", () => {
         .get("/api/users/butter_bridge")
         .expect(200)
         .then(({ body }) => {
-          expect(body.user).to.be.an("array");
+          expect(body.user[0]).to.be.an("object");
           expect(body.user[0]).to.contain.keys([
             "username",
             "avatar_url",
@@ -122,7 +122,7 @@ describe("/api", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          expect(body.article).to.be.an("array");
+          expect(body.article[0]).to.be.an("object");
           expect(body.article[0]).to.contain.keys([
             "author",
             "title",
@@ -247,7 +247,7 @@ describe("/api", () => {
         .get("/api/articles/1/comments")
         .expect(200)
         .then(({ body }) => {
-          expect(body.comments).to.be.an("array");
+          expect(body.comments[0]).to.be.an("object");
           expect(body.comments[0]).to.contain.keys([
             "comment_id",
             "votes",

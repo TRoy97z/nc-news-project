@@ -5,7 +5,13 @@ const {
   removeCommentById
 } = require("../controllers/commentsC");
 
-commentsRouter.patch("/:comment_id", patchCommentVotes);
-commentsRouter.delete("/:comment_id", removeCommentById);
+const { invalidMethodHandler } = require("../error-handlers");
+
+commentsRouter
+  .patch("/:comment_id", patchCommentVotes)
+  .all(invalidMethodHandler);
+commentsRouter
+  .delete("/:comment_id", removeCommentById)
+  .all(invalidMethodHandler);
 
 module.exports = commentsRouter;

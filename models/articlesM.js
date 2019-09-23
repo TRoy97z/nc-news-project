@@ -2,7 +2,7 @@ const connection = require("../db/connection");
 const { IfThingsDontExistHandler } = require("../error-handlers");
 
 exports.selectArticles = query => {
-  const sort = query.sortby || "created_at";
+  const sort = query.sort_by || "created_at";
   let order = query.order || "desc";
 
   if (order != "desc" && order != "asc") {

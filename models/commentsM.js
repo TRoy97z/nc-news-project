@@ -10,13 +10,13 @@ exports.insertComment = (article_id, newComment) => {
 
 exports.selectComment = (
   article_id,
-  sortBy = "created_at",
+  sort_by = "created_at",
   orderBy = "desc"
 ) => {
   return connection
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
-    .orderBy(sortBy, orderBy)
+    .orderBy(sort_by, orderBy)
     .where({ article_id });
 };
 

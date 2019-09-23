@@ -8,17 +8,23 @@ const {
   postCommentByArticleId,
   getCommentByArticleId
 } = require("../controllers/commentsC");
+const { invalidMethodHandler } = require("../error-handlers");
 
-articlesRouter.route("/").get(getArticles);
+articlesRouter
+  .route("/")
+  .get(getArticles)
+  .all(invalidMethodHandler);
 
 articlesRouter
   .route("/:article_id")
   .get(getArticleById)
-  .patch(patchArticleById);
+  .patch(patchArticleById)
+  .all(invalidMethodHandler);
 
 articlesRouter
   .route("/:article_id/comments")
   .get(getCommentByArticleId)
-  .post(postCommentByArticleId);
+  .post(postCommentByArticleId)
+  .all(invalidMethodHandler);
 
 module.exports = articlesRouter;

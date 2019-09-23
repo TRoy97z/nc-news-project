@@ -12,7 +12,7 @@ exports.up = knex => {
       .string("author")
       .notNullable()
       .references("users.username");
-    articlesTable.timestamp("created_at");
+    articlesTable.timestamp("created_at").defaultTo(knex.fn.now());
   });
 };
 
