@@ -1,14 +1,14 @@
 const commentsRouter = require("express").Router();
 
 const {
-  patchCommentVotes,
+  patchCommentVotesById,
   removeCommentById
 } = require("../controllers/commentsC");
 
 const { invalidMethodHandler } = require("../error-handlers");
 
 commentsRouter
-  .patch("/:comment_id", patchCommentVotes)
+  .patch("/:comment_id", patchCommentVotesById)
   .all(invalidMethodHandler);
 commentsRouter
   .delete("/:comment_id", removeCommentById)

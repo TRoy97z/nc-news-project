@@ -4,11 +4,10 @@ const usersRouter = require("../routers/usersR");
 const articlesRouter = require("../routers/articlesR");
 const commentsRouter = require("../routers/commentsR");
 const { invalidMethodHandler } = require("../error-handlers");
-
+const { getApi } = require("../controllers/apiC");
 apiRouter
-  .get("/", (req, res) => {
-    res.send("Nothing to see here....yet");
-  })
+  .route("/")
+  .get(getApi)
   .all(invalidMethodHandler);
 
 apiRouter.use("/topics", topicsRouter);

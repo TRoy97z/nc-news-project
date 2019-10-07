@@ -3,7 +3,7 @@ const { IfThingsDontExistHandler } = require("../error-handlers");
 
 exports.selectArticles = query => {
   const sort = query.sort_by || "created_at";
-  let order = query.order || "desc";
+  const order = query.order || "desc";
 
   if (order != "desc" && order != "asc") {
     return Promise.reject({

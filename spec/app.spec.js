@@ -9,6 +9,23 @@ chai.use(require("chai-sorted"));
 describe("/api", () => {
   beforeEach(() => connection.seed.run());
   after(() => connection.destroy());
+  it("GET: 200, responds with all the available endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body: { endpoints } }) => {
+        expect(endpoints).to.be.an("object");
+      });
+  });
+  it("405: invalid method", () => {
+    return request(app)
+      .post("/api")
+      .expect(405)
+      .then(({ body }) => {
+        expect(body.msg).to.equal("Method not allowed");
+      });
+  });
+
   describe("/topics", () => {
     it("GET: 200, responds with topics objects", () => {
       return request(app)
@@ -29,12 +46,8 @@ describe("/api", () => {
         .get("/api/users/butter_bridge")
         .expect(200)
         .then(({ body }) => {
-          expect(body.user[0]).to.be.an("object");
-          expect(body.user[0]).to.contain.keys([
-            "username",
-            "avatar_url",
-            "name"
-          ]);
+          expect(body.user).to.be.an("object");
+          expect(body.user).to.contain.keys(["username", "avatar_url", "name"]);
         });
     });
     it("404: responds with an error message when trying to get a user with an username that does not exist", () => {
@@ -122,8 +135,8 @@ describe("/api", () => {
         .get("/api/articles/1")
         .expect(200)
         .then(({ body }) => {
-          expect(body.article[0]).to.be.an("object");
-          expect(body.article[0]).to.contain.keys([
+          expect(body.article).to.be.an("object");
+          expect(body.article).to.contain.keys([
             "author",
             "title",
             "article_id",
@@ -156,8 +169,8 @@ describe("/api", () => {
         .send({ inc_votes: 2 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.article[0].article_id).to.equal(1);
-          expect(body.article[0].votes).to.equal(102);
+          expect(body.article.article_id).to.equal(1);
+          expect(body.article.votes).to.equal(102);
         });
     });
     it("PATCH: 200, decreases votes property by 5", () => {
@@ -166,8 +179,8 @@ describe("/api", () => {
         .send({ inc_votes: -5 })
         .expect(200)
         .then(({ body }) => {
-          expect(body.article[0].article_id).to.equal(1);
-          expect(body.article[0].votes).to.equal(95);
+          expect(body.article.article_id).to.equal(1);
+          expect(body.article.votes).to.equal(95);
         });
     });
     it("400: when passed invalid vote count returns 'Bad Request'", () => {
