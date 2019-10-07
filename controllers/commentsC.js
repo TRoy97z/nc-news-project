@@ -1,6 +1,6 @@
 const {
   insertComment,
-  selectComment,
+  selectComments,
   updateCommentVotes,
   deleteComment
 } = require("../models/commentsM");
@@ -17,10 +17,10 @@ exports.postCommentByArticleId = (req, res, next) => {
 
 exports.getCommentByArticleId = (req, res, next) => {
   const { article_id } = req.params;
-  let { sortBy, orderBy } = req.query;
-  if (orderBy !== "asc" && orderBy !== "desc") orderBy = "desc";
-  selectComment(article_id, sortBy, orderBy)
-    .then(comments => {
+  let { sort_by, order } = req.query;
+  if (order !== "asc" && order !== "desc") order = "desc";
+  selectComments(article_id, sort_by, order)
+    .then(([comments]) => {
       return res.status(200).send({ comments });
     })
     .catch(next);

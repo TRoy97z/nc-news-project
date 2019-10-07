@@ -280,20 +280,28 @@ describe("/api", () => {
     });
     it("GET: 200 respond with comments sorted by a query", () => {
       return request(app)
-        .get("/api/articles/1/comments?sortBy=comment_id")
-        .expect(200)
-        .then(({ body: { comments } }) => {
-          expect(comments).to.be.descendingBy("comment_id");
-        });
-    });
-    it("GET: 200 respond with comments ordered by a query", () => {
-      return request(app)
-        .get("/api/articles/1/comments?sortBy=comment_id&orderBy=desc")
+        .get("/api/articles/1/comments?sort_by=comment_id")
         .expect(200)
         .then(({ body }) => {
           expect(body.comments).to.be.descendingBy("comment_id");
         });
     });
+    it("GET: 200 respond with comments ordered by a query", () => {
+      return request(app)
+        .get("/api/articles/1/comments?sort_by=comment_id&order=asc")
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).to.be.ascendingBy("comment_id");
+        });
+    });
+    // it("404: when passed article_id that is valid but does not exist returns 'Article Not Found'", () => {
+    //   return request(app)
+    //     .get("/api/articles/9990/comments")
+    //     .expect(404)
+    //     .then(({ body }) => {
+    //       expect(body.msg).to.equal("Article Not Found");
+    //     });
+    // });
   });
   describe("/comments/:comment_id", () => {
     it("PATCH:200 should update a comment's votes given the ID and respond with the updated comment (increasing votes)", () => {

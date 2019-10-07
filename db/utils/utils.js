@@ -23,3 +23,18 @@ exports.formatComments = (comments, articleRef) => {
     return newComment;
   });
 };
+
+exports.checkIfArticleExists = article_id => {
+  return connection
+    .select("*")
+    .from("articles")
+    .where({ article_id })
+    .then(array => {
+      if (!array.length) {
+        return Promise.reject({
+          status: 404,
+          msg: "Not Found"
+        });
+      } else return null;
+    });
+};

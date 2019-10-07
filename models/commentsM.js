@@ -8,16 +8,20 @@ exports.insertComment = (article_id, newComment) => {
     .returning("*");
 };
 
-exports.selectComment = (
+exports.selectComments = (
   article_id,
   sort_by = "created_at",
-  orderBy = "desc"
+  order = "desc"
 ) => {
   return connection
     .select("comment_id", "votes", "created_at", "author", "body")
     .from("comments")
-    .orderBy(sort_by, orderBy)
-    .where({ article_id });
+    .orderBy(sort_by, order)
+    .where({ article_id })
+    .then(comments => {
+      if (comments.length) return Promise.all([comments]);
+      return Promise.reject({ status: 404, msg: "Article Not Found" });
+    });
 };
 
 exports.updateCommentVotes = (comment_id, { inc_votes = 0 }) => {
