@@ -5,6 +5,7 @@ const articlesRouter = require("../routers/articlesR");
 const commentsRouter = require("../routers/commentsR");
 const { invalidMethodHandler } = require("../error-handlers");
 const { getApi } = require("../controllers/apiC");
+
 apiRouter
   .route("/")
   .get(getApi)
