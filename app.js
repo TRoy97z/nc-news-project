@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const apiRouter = require("./routers/api");
 const {
   sqlErrorHandler,
@@ -8,6 +9,7 @@ const {
   invalidMethodHandler
 } = require("./error-handlers");
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/api", apiRouter);
