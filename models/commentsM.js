@@ -1,9 +1,9 @@
 const connection = require("../db/connection");
 
 exports.insertComment = (article_id, newComment) => {
-  const { username, body } = newComment;
+  const { username, body, created_at } = newComment;
   return connection
-    .insert({ author: username, body, article_id })
+    .insert({ author: username, body, article_id, created_at })
     .into("comments")
     .returning("*");
 };

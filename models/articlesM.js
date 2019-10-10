@@ -1,7 +1,7 @@
 const connection = require("../db/connection");
 const { IfThingsDontExistHandler } = require("../error-handlers");
 
-exports.selectArticles = query => {
+exports.selectArticles = (query, limit = 10, p = 1) => {
   const sort = query.sort_by || "created_at";
   const order = query.order || "desc";
 
@@ -12,34 +12,38 @@ exports.selectArticles = query => {
     });
   }
 
-  return connection
-    .select("articles.*")
-    .from("articles")
-    .modify(queryBuilder => {
-      if (query.author) queryBuilder.where("articles.author", query.author);
-      if (query.topic) queryBuilder.where("articles.topic", query.topic);
-    })
-    .orderBy(sort, order)
-    .count({ comment_count: "comment_id" })
-    .leftJoin("comments", "articles.article_id", "comments.article_id")
-    .groupBy("articles.article_id")
-    .then(data => {
-      let invalid = "";
+  return (
+    connection
+      .select("articles.*")
+      .from("articles")
+      .modify(queryBuilder => {
+        if (query.author) queryBuilder.where("articles.author", query.author);
+        if (query.topic) queryBuilder.where("articles.topic", query.topic);
+      })
+      .orderBy(sort, order)
+      .count({ comment_count: "comment_id" })
+      // .limit(limit)
+      // .offset((p - 1) * limit)
+      .leftJoin("comments", "articles.article_id", "comments.article_id")
+      .groupBy("articles.article_id")
+      .then(data => {
+        let invalid = "";
 
-      if (!data.length) {
-        if (query.author) {
-          invalid += query.author + " ";
+        if (!data.length) {
+          if (query.author) {
+            invalid += query.author + " ";
+          }
+          if (query.topic) {
+            invalid += query.topic;
+          }
+          return Promise.reject({
+            msg: "Not Found",
+            status: 404
+          });
         }
-        if (query.topic) {
-          invalid += query.topic;
-        }
-        return Promise.reject({
-          msg: "Not Found",
-          status: 404
-        });
-      }
-      return data;
-    });
+        return data;
+      })
+  );
 };
 
 exports.selectArticleById = article_id => {
